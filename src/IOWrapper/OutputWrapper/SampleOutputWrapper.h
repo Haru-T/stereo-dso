@@ -23,7 +23,6 @@
 
 #pragma once
 #include "IOWrapper/Output3DWrapper.h"
-#include "boost/thread.hpp"
 #include "util/MinimalImage.h"
 
 #include "FullSystem/HessianBlocks.h"

@@ -22,30 +22,40 @@
  */
 
 #pragma once
-#include "boost/thread.hpp"
 #include "util/settings.h"
+#include "util/NumType.h"
+
+#include <cassert>
+#include <cstring>
+#include <condition_variable>
+#include <cstdio>
+#include <functional>
+#include <Eigen/Core>
 #include <iostream>
-#include <stdio.h>
+#include <mutex>
+#include <thread>
 
 namespace dso {
 
 template <typename Running> class IndexThreadReduce {
 
 public:
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
+
+  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
   inline IndexThreadReduce() {
     nextIndex = 0;
     maxIndex = 0;
     stepSize = 1;
-    callPerIndex = boost::bind(&IndexThreadReduce::callPerIndexDefault, this,
-                               _1, _2, _3, _4);
+    callPerIndex = [this](int i, int j, Running *k, int tid) {
+      this->callPerIndexDefault(i, j, k, tid);
+    };
 
     running = true;
     for (int i = 0; i < NUM_THREADS; i++) {
       isDone[i] = false;
       gotOne[i] = true;
-      workerThreads[i] = boost::thread(&IndexThreadReduce::workerLoop, this, i);
+      workerThreads[i] = std::thread(&IndexThreadReduce::workerLoop, this, i);
     }
   }
   inline ~IndexThreadReduce() {
@@ -58,14 +68,13 @@ public:
     for (int i = 0; i < NUM_THREADS; i++)
       workerThreads[i].join();
 
-    printf("destroyed ThreadReduce\n");
+    std::printf("destroyed ThreadReduce\n");
   }
 
-  inline void
-  reduce(boost::function<void(int, int, Running *, int)> callPerIndex,
-         int first, int end, int stepSize = 0) {
+  inline void reduce(std::function<void(int, int, Running *, int)> callPerIndex,
+                     int first, int end, int stepSize = 0) {
 
-    memset(&stats, 0, sizeof(Running));
+    std::memset(&stats, 0, sizeof(Running));
 
     //		if(!multiThreading)
     //		{
@@ -74,11 +83,12 @@ public:
     //		}
 
     if (stepSize == 0)
-      stepSize = ((end - first) + NUM_THREADS - 1) / NUM_THREADS;
+      stepSize = ((end - first) + NUM_THREADS - 1) /
+                 NUM_THREADS;
 
     // printf("reduce called\n");
 
-    boost::unique_lock<boost::mutex> lock(exMutex);
+    std::unique_lock<std::mutex> lock(exMutex);
 
     // save
     this->callPerIndex = callPerIndex;
@@ -114,8 +124,9 @@ public:
 
     nextIndex = 0;
     maxIndex = 0;
-    this->callPerIndex = boost::bind(&IndexThreadReduce::callPerIndexDefault,
-                                     this, _1, _2, _3, _4);
+    this->callPerIndex = [this](int i, int j, Running *k, int tid) {
+      this->callPerIndexDefault(i, j, k, tid);
+    };
 
     // printf("reduce done (all threads finished)\n");
   }
@@ -123,13 +134,13 @@ public:
   Running stats;
 
 private:
-  boost::thread workerThreads[NUM_THREADS];
-  bool isDone[NUM_THREADS];
-  bool gotOne[NUM_THREADS];
+  std::array<std::thread, NUM_THREADS> workerThreads;
+  std::array<bool, NUM_THREADS> isDone;
+  std::array<bool, NUM_THREADS> gotOne;
 
-  boost::mutex exMutex;
-  boost::condition_variable todo_signal;
-  boost::condition_variable done_signal;
+  std::mutex exMutex;
+  std::condition_variable todo_signal;
+  std::condition_variable done_signal;
 
   int nextIndex;
   int maxIndex;
@@ -137,15 +148,15 @@ private:
 
   bool running;
 
-  boost::function<void(int, int, Running *, int)> callPerIndex;
+  std::function<void(int, int, Running *, int)> callPerIndex;
 
   void callPerIndexDefault(int i, int j, Running *k, int tid) {
-    printf("ERROR: should never be called....\n");
+    std::printf("ERROR: should never be called....\n");
     assert(false);
   }
 
   void workerLoop(int idx) {
-    boost::unique_lock<boost::mutex> lock(exMutex);
+    std::unique_lock<std::mutex> lock(exMutex);
 
     while (running) {
       // try to get something to do.

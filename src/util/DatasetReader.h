@@ -38,8 +38,6 @@
 #include "zip.h"
 #endif
 
-#include <boost/thread.hpp>
-
 using namespace dso;
 
 //把指定路径里面的图片，放入list中

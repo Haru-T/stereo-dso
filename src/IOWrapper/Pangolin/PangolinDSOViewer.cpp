@@ -34,6 +34,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <sys/time.h>
 
 namespace dso {
 namespace IOWrap {
@@ -44,7 +45,7 @@ PangolinDSOViewer::PangolinDSOViewer(int w, int h, bool startRunThread) {
   running = true;
 
   {
-    boost::unique_lock<boost::mutex> lk(openImagesMutex);
+    std::unique_lock<std::mutex> lk(openImagesMutex);
     internalVideoImg = new MinimalImageB3(w, h);
     internalKFImg = new MinimalImageB3(w, h);
     internalResImg = new MinimalImageB3(w, h);
@@ -63,7 +64,7 @@ PangolinDSOViewer::PangolinDSOViewer(int w, int h, bool startRunThread) {
   needReset = false;
 
   if (startRunThread)
-    runThread = boost::thread(&PangolinDSOViewer::run, this);
+    runThread = std::thread(&PangolinDSOViewer::run, this);
 }
 
 PangolinDSOViewer::~PangolinDSOViewer() {
@@ -205,7 +206,7 @@ void PangolinDSOViewer::run() {
     if (setting_render_display3D) {
       // Activate efficiently by object
       Visualization3D_display.Activate(Visualization3D_camera);
-      boost::unique_lock<boost::mutex> lk3d(model3DMutex);
+      std::unique_lock<std::mutex> lk3d(model3DMutex);
       // pangolin::glDrawColouredCube();
       int refreshed = 0;
       for (KeyFrameDisplay *fh : keyframes) {
@@ -497,7 +498,7 @@ void PangolinDSOViewer::publishKeyframes(std::vector<FrameHessian *> &frames,
   if (disableAllDisplay)
     return;
 
-  boost::unique_lock<boost::mutex> lk(model3DMutex);
+  std::unique_lock<std::mutex> lk(model3DMutex);
   for (FrameHessian *fh : frames) {
     if (keyframesByKFID.find(fh->frameID) == keyframesByKFID.end()) {
       KeyFrameDisplay *kfd = new KeyFrameDisplay();
@@ -515,7 +516,7 @@ void PangolinDSOViewer::publishCamPose(FrameShell *frame,
   if (disableAllDisplay)
     return;
 
-  boost::unique_lock<boost::mutex> lk(model3DMutex);
+  std::unique_lock<std::mutex> lk(model3DMutex);
   struct timeval time_now;
   gettimeofday(&time_now, NULL);
   lastNTrackingMs.push_back(
@@ -538,7 +539,7 @@ void PangolinDSOViewer::pushLiveFrame(FrameHessian *image) {
   if (disableAllDisplay)
     return;
 
-  boost::unique_lock<boost::mutex> lk(openImagesMutex);
+  std::unique_lock<std::mutex> lk(openImagesMutex);
 
   for (int i = 0; i < w * h; i++) {
     internalVideoImg->data[i][0] = internalVideoImg->data[i][1] =
@@ -559,7 +560,7 @@ void PangolinDSOViewer::pushStereoLiveFrame(FrameHessian *image,
   if (disableAllDisplay)
     return;
 
-  boost::unique_lock<boost::mutex> lk(openImagesMutex);
+  std::unique_lock<std::mutex> lk(openImagesMutex);
 
   for (int i = 0; i < w * h; i++) {
     internalVideoImg->data[i][0] = internalVideoImg->data[i][1] =
@@ -585,7 +586,7 @@ void PangolinDSOViewer::pushDepthImage(MinimalImageB3 *image) {
   if (disableAllDisplay)
     return;
 
-  boost::unique_lock<boost::mutex> lk(openImagesMutex);
+  std::unique_lock<std::mutex> lk(openImagesMutex);
 
   struct timeval time_now;
   gettimeofday(&time_now, NULL);

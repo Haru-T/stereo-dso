@@ -29,7 +29,7 @@ namespace dso {
 struct RawResidualJacobian {
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
   // ================== new structure: save independently =============.
-  EIGEN_ALIGN16 VecNRf resF;
+  EIGEN_ALIGN32 VecNRf resF;
 
   // the two rows of d[x,y]/d[xi].
   EIGEN_ALIGN16 Vec6f Jpdxi[2]; // 2x6
@@ -41,10 +41,10 @@ struct RawResidualJacobian {
   EIGEN_ALIGN16 Vec2f Jpdd; // 2x1
 
   // the two columns of d[r]/d[x,y].
-  EIGEN_ALIGN16 VecNRf JIdx[2]; // 9x2
+  EIGEN_ALIGN32 VecNRf JIdx[2]; // 9x2
 
   // = the two columns of d[r] / d[ab]
-  EIGEN_ALIGN16 VecNRf JabF[2]; // 9x2
+  EIGEN_ALIGN32 VecNRf JabF[2]; // 9x2
 
   // = JIdx^T * JIdx (inner product). Only as a shorthand.
   EIGEN_ALIGN16 Mat22f JIdx2; // 2x2

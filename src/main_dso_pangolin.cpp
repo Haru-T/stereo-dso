@@ -26,6 +26,7 @@
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/time.h>
 #include <thread>
 #include <unistd.h>
 
@@ -36,7 +37,6 @@
 #include "util/globalCalib.h"
 #include "util/globalFuncs.h"
 #include "util/settings.h"
-#include <boost/thread.hpp>
 
 #include "FullSystem/FullSystem.h"
 #include "FullSystem/PixelSelector2.h"
@@ -46,8 +46,8 @@
 #include "IOWrapper/OutputWrapper/SampleOutputWrapper.h"
 #include "IOWrapper/Pangolin/PangolinDSOViewer.h"
 
-#include <opencv/cv.hpp>
-#include <opencv/highgui.h>
+#include <opencv2/highgui.hpp>
+#include <opencv2/opencv.hpp>
 
 std::string vignette = "";
 std::string gammaCalib = "";
@@ -328,7 +328,7 @@ int main(int argc, char **argv) {
     parseArgument(argv[i]);
 
   // hook crtl+C.
-  boost::thread exThread = boost::thread(exitThread);
+  std::thread exThread = std::thread(exitThread);
 
   ImageFolderReader *reader =
       new ImageFolderReader(source + "/image_0", calib, gammaCalib, vignette);
