@@ -36,7 +36,7 @@ struct FrameHessian;
 
 struct Pnt {
 public:
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
+  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   // index in jacobian. never changes (actually, there is no reason why).
   float u, v;
 
@@ -71,7 +71,7 @@ public:
 
 class CoarseInitializer {
 public:
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
+  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   CoarseInitializer(int w, int h);
   ~CoarseInitializer();
 

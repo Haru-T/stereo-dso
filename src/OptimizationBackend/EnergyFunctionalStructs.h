@@ -42,7 +42,7 @@ class EnergyFunctional;
 
 class EFResidual {
 public:
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
+  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
   inline EFResidual(PointFrameResidual *org, EFPoint *point_, EFFrame *host_,
                     EFFrame *target_)
@@ -84,7 +84,7 @@ enum EFPointStatus { PS_GOOD = 0, PS_MARGINALIZE, PS_DROP };
 
 class EFPoint {
 public:
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
+  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   EFPoint(PointHessian *d, EFFrame *host_) : data(d), host(host_) {
     takeData();
     stateFlag = EFPointStatus::PS_GOOD;
@@ -117,7 +117,7 @@ public:
 
 class EFFrame {
 public:
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
+  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   EFFrame(FrameHessian *d) : data(d) { takeData(); }
   void takeData();
 

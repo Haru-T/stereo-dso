@@ -69,7 +69,7 @@ class EFPoint;
 #define SCALE_B_INVERSE (1.0f / SCALE_B)
 
 struct FrameFramePrecalc {
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
+  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   // static values
   static int instanceCounter;
   FrameHessian *host;   // defines row
@@ -96,7 +96,7 @@ struct FrameFramePrecalc {
 };
 
 struct FrameHessian {
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
+  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   EFFrame *efFrame;
 
   // constant info & pre-calculated values
@@ -273,7 +273,7 @@ struct FrameHessian {
 };
 
 struct CalibHessian {
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
+  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   static int instanceCounter;
 
   VecC value_zero;
@@ -369,7 +369,7 @@ struct CalibHessian {
 
 // hessian component associated with one point.
 struct PointHessian {
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
+  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   static int instanceCounter;
   EFPoint *efPoint;
 

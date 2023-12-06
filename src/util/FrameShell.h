@@ -30,7 +30,7 @@ namespace dso {
 
 class FrameShell {
 public:
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
+  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   int id;           // INTERNAL ID, starting at zero.
   int incoming_id;  // ID passed into DSO
   double timestamp; // timestamp passed into DSO.

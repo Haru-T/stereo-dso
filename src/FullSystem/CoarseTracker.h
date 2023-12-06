@@ -37,7 +37,7 @@ struct PointFrameResidual;
 
 class CoarseTracker {
 public:
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
+  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
   CoarseTracker(int w, int h);
   ~CoarseTracker();
@@ -123,7 +123,7 @@ private:
 
 class CoarseDistanceMap {
 public:
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
+  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
   CoarseDistanceMap(int w, int h);
   ~CoarseDistanceMap();

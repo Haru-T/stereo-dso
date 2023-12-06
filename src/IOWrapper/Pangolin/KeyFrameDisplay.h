@@ -58,7 +58,7 @@ struct MyVertex {
 class KeyFrameDisplay {
 
 public:
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
+  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   KeyFrameDisplay();
   ~KeyFrameDisplay();
 
