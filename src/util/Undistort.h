@@ -80,7 +80,7 @@ public:
     return Eigen::Vector2i(wOrg, hOrg);
   };
   inline bool isValid() { return valid; };
-  inline const float getBl() const { return bl; };
+  inline float getBl() const { return bl; };
 
   template <typename T>
   ImageAndExposure *undistort(const MinimalImage<T> *image_raw,

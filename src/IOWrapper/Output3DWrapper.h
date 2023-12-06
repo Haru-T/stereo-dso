@@ -128,8 +128,8 @@ public:
    *  Calling:
    *  Always called, no overhead if not used.
    */
-  virtual void
-  publishGraph(const std::map<long, Eigen::Vector2i> &connectivity) {}
+  virtual void publishGraph(
+      [[maybe_unused]] const std::map<long, Eigen::Vector2i> &connectivity) {}
 
   /* Usage:
    * Called after each new Keyframe is inserted & optimized, with all keyframes
@@ -147,8 +147,10 @@ public:
    * Calling:
    * Always called, negligible overhead if not used.
    */
-  virtual void publishKeyframes(std::vector<FrameHessian *> &frames, bool final,
-                                CalibHessian *HCalib) {}
+  virtual void
+  publishKeyframes([[maybe_unused]] std::vector<FrameHessian *> &frames,
+                   [[maybe_unused]] bool final,
+                   [[maybe_unused]] CalibHessian *HCalib) {}
 
   /* Usage:
    * Called once for each tracked frame, with the real-time, low-delay frame
@@ -157,7 +159,8 @@ public:
    * Calling:
    * Always called, no overhead if not used.
    */
-  virtual void publishCamPose(FrameShell *frame, CalibHessian *HCalib) {}
+  virtual void publishCamPose([[maybe_unused]] FrameShell *frame,
+                              [[maybe_unused]] CalibHessian *HCalib) {}
 
   /* Usage:
    * Called once for each new frame, before it is tracked (i.e., it doesn't have
@@ -166,9 +169,10 @@ public:
    * Calling:
    * Always called, no overhead if not used.
    */
-  virtual void pushLiveFrame(FrameHessian *image) {}
-  virtual void pushStereoLiveFrame(FrameHessian *image,
-                                   FrameHessian *image_right) {}
+  virtual void pushLiveFrame([[maybe_unused]] FrameHessian *image) {}
+  virtual void pushStereoLiveFrame([[maybe_unused]] FrameHessian *image,
+                                   [[maybe_unused]] FrameHessian *image_right) {
+  }
 
   /* called once after a new keyframe is created, with the color-coded,
    * forward-warped inverse depthmap for that keyframe, which is used for
@@ -178,7 +182,7 @@ public:
    * Needs to prepare the depth image, so it is only called if
    * [needPushDepthImage()] returned true.
    */
-  virtual void pushDepthImage(MinimalImageB3 *image) {}
+  virtual void pushDepthImage([[maybe_unused]] MinimalImageB3 *image) {}
   virtual bool needPushDepthImage() { return false; }
 
   /* Usage:
@@ -190,7 +194,8 @@ public:
    * Calling:
    * Always called, almost no overhead if not used.
    */
-  virtual void pushDepthImageFloat(MinimalImageF *image, FrameHessian *KF) {}
+  virtual void pushDepthImageFloat([[maybe_unused]] MinimalImageF *image,
+                                   [[maybe_unused]] FrameHessian *KF) {}
 
   /* call on finish */
   virtual void join() {}

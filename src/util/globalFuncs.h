@@ -199,8 +199,8 @@ EIGEN_ALWAYS_INLINE float getMatInterpolatedElement11BiLin(const cv::Mat mat,
   float dx = x - ix;
   float dy = y - iy;
 
-  float topInt = dx * tr + (1 - dx) * tl;
-  float botInt = dx * br + (1 - dx) * bl;
+  // float topInt = dx * tr + (1 - dx) * tl;
+  // float botInt = dx * br + (1 - dx) * bl;
   float leftInt = dy * bl + (1 - dy) * tl;
   float rightInt = dy * br + (1 - dy) * tr;
 

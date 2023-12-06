@@ -432,7 +432,7 @@ struct PointHessian {
     instanceCounter--;
   }
 
-  inline bool isOOB(const std::vector<FrameHessian *> &toKeep,
+  inline bool isOOB([[maybe_unused]] const std::vector<FrameHessian *> &toKeep,
                     const std::vector<FrameHessian *> &toMarg) const {
 
     int visInToMarg = 0;
