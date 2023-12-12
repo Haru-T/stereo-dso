@@ -52,7 +52,8 @@
 std::string vignette = "";
 std::string gammaCalib = "";
 std::string source = "";
-std::string calib = "";
+std::string calib_l = "";
+std::string calib_r = "";
 double rescale = 1;
 bool reverse = false;
 bool disableROS = false;
@@ -245,9 +246,17 @@ void parseArgument(char *arg) {
     return;
   }
 
-  if (1 == sscanf(arg, "calib=%s", buf)) {
-    calib = buf;
-    printf("loading calibration from %s!\n", calib.c_str());
+  if (1 == sscanf(arg, "calib_l=%s", buf)) {
+    calib_l = buf;
+    printf("loading calibration for the left camera from %s!\n",
+           calib_l.c_str());
+    return;
+  }
+
+  if (1 == sscanf(arg, "calib_r=%s", buf)) {
+    calib_r = buf;
+    printf("loading calibration for the right camera from %s!\n",
+           calib_r.c_str());
     return;
   }
 
@@ -331,9 +340,9 @@ int main(int argc, char **argv) {
   std::thread exThread = std::thread(exitThread);
 
   ImageFolderReader *reader =
-      new ImageFolderReader(source + "/image_0", calib, gammaCalib, vignette);
+      new ImageFolderReader(source + "/image_0", calib_l, gammaCalib, vignette);
   ImageFolderReader *reader_right =
-      new ImageFolderReader(source + "/image_1", calib, gammaCalib, vignette);
+      new ImageFolderReader(source + "/image_1", calib_r, gammaCalib, vignette);
   reader->setGlobalCalibration();
   reader_right->setGlobalCalibration();
 
