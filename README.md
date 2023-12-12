@@ -17,7 +17,8 @@ Run on a dataset from [http://www.cvlibs.net/datasets/kitti/eval_odometry.php](h
 
 		bin/dso_dataset \
 			files=XXXXX/sequence_XX \
-			calib=XXXXX/sequence_XX/para/camera.txt \
+			calib_l=XXXXX/sequence_XX/para/camera_l.txt \
+			calib_r=XXXXX/sequence_XX/para/camera_r.txt \
 			gamma=XXXXX/sequence_XX/para/pcalib.txt \
 			vignette=XXXXX/sequence_XX/para/vignette.png \
 			preset=0 \
@@ -26,7 +27,8 @@ Under sequence_XX, there should be two image datasets called image_0 and image_1
 
 		bin/dso_dataset \
 			files=XXXXX/sequence_XX \
-			calib=XXXXX/sequence_XX/para/camera.txt \
+			calib_l=XXXXX/sequence_XX/para/camera_l.txt \
+			calib_r=XXXXX/sequence_XX/para/camera_r.txt \
 			preset=0 \
 			mode=1
 #### 2.1 Dataset Format
