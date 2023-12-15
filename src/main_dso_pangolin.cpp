@@ -31,6 +31,7 @@
 #include <unistd.h>
 
 #include "IOWrapper/ImageDisplay.h"
+#include "IOWrapper/OpenCV/DepthImageWrapper.h"
 #include "IOWrapper/Output3DWrapper.h"
 
 #include "util/DatasetReader.h"
@@ -54,6 +55,7 @@ std::string gammaCalib = "";
 std::string source = "";
 std::string calib_l = "";
 std::string calib_r = "";
+std::string depthImageOutput = "";
 double rescale = 1;
 bool reverse = false;
 bool disableROS = false;
@@ -272,6 +274,12 @@ void parseArgument(char *arg) {
     return;
   }
 
+  if (1 == sscanf(arg, "depth_out=%s", buf)) {
+    depthImageOutput = buf;
+    printf("setting depth image output directory to %s!\n",
+           depthImageOutput.c_str());
+  }
+
   if (1 == sscanf(arg, "rescale=%f", &foption)) {
     rescale = foption;
     printf("RESCALE %f!\n", rescale);
@@ -366,6 +374,8 @@ int main(int argc, char **argv) {
     viewer = new IOWrap::PangolinDSOViewer(wG[0], hG[0], false);
     fullSystem->outputWrapper.push_back(viewer);
   }
+  fullSystem->outputWrapper.push_back(new IOWrap::DepthImageWrapper(
+      depthImageOutput, std::filesystem::path(depthImageOutput) / "times.txt"));
 
   if (useSampleOutput)
     fullSystem->outputWrapper.push_back(new IOWrap::SampleOutputWrapper());
