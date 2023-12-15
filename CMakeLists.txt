@@ -82,7 +82,8 @@ if (OpenCV_FOUND)
 	include_directories( ${OpenCV_INCLUDE_DIRS} )
 	set(dso_opencv_SOURCE_FILES
 		${CMAKE_CURRENT_SOURCE_DIR}/src/IOWrapper/OpenCV/ImageDisplay_OpenCV.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/src/IOWrapper/OpenCV/ImageRW_OpenCV.cpp)
+		${CMAKE_CURRENT_SOURCE_DIR}/src/IOWrapper/OpenCV/ImageRW_OpenCV.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/src/IOWrapper/OpenCV/DepthImageWrapper.cpp)
   target_sources(dso PRIVATE ${dso_opencv_SOURCE_FILES})
   target_include_directories(dso PUBLIC ${OpenCV_INCLUDE_DIRS})
   target_link_directories(dso PRIVATE ${OpenCV_LINK_DIRS})
