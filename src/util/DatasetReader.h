@@ -27,7 +27,8 @@
 #include "util/settings.h"
 
 #include <algorithm>
-#include <dirent.h>
+#include <array>
+#include <filesystem>
 #include <fstream>
 #include <sstream>
 
@@ -42,28 +43,17 @@ using namespace dso;
 
 //把指定路径里面的图片，放入list中
 inline int getdir(std::string dir, std::vector<std::string> &files) {
-  DIR *dp;
-  struct dirent *dirp;
-  if ((dp = opendir(dir.c_str())) == NULL) {
-    return -1;
+  constexpr std::array<const char *, 3> image_extensions = {".png", ".jpg",
+                                                            ".jpeg"};
+
+  for (auto &p : std::filesystem::directory_iterator(dir)) {
+    if (p.is_regular_file() &&
+        std::find(image_extensions.begin(), image_extensions.end(),
+                  p.path().extension()) != image_extensions.end()) {
+      files.push_back(p.path().string());
+    }
   }
-
-  while ((dirp = readdir(dp)) != NULL) {
-    std::string name = std::string(dirp->d_name);
-
-    if (name != "." && name != "..")
-      files.push_back(name);
-  }
-  closedir(dp);
-
   std::sort(files.begin(), files.end());
-
-  if (dir.at(dir.length() - 1) != '/')
-    dir = dir + "/";
-  for (unsigned int i = 0; i < files.size(); i++) {
-    if (files[i].at(0) != '/')
-      files[i] = dir + files[i];
-  }
 
   return files.size();
 }
