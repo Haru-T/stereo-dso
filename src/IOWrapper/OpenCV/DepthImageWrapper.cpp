@@ -44,9 +44,9 @@ DepthImageWrapper::~DepthImageWrapper() noexcept {
 
 void DepthImageWrapper::pushDepthImageFloat(MinimalImageF *image,
                                             FrameHessian *KF) {
-  std::string basename(16, '\0');
-  std::size_t str_len =
-      std::snprintf(basename.data(), basename.size() - 1, "%010zu.png", count_);
+  std::string basename(17, '\0');
+  std::size_t str_len = std::snprintf(basename.data(), basename.size() - 1,
+                                      "%010zu.tiff", count_);
   basename.resize(str_len);
   std::string filename = (output_directory_ / basename).string();
 
