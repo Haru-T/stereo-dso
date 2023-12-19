@@ -374,8 +374,11 @@ int main(int argc, char **argv) {
     viewer = new IOWrap::PangolinDSOViewer(wG[0], hG[0], false);
     fullSystem->outputWrapper.push_back(viewer);
   }
-  fullSystem->outputWrapper.push_back(new IOWrap::DepthImageWrapper(
-      depthImageOutput, std::filesystem::path(depthImageOutput) / "times.txt"));
+  if (!depthImageOutput.empty()) {
+    fullSystem->outputWrapper.push_back(new IOWrap::DepthImageWrapper(
+        depthImageOutput,
+        std::filesystem::path(depthImageOutput) / "times.txt"));
+  }
 
   if (useSampleOutput)
     fullSystem->outputWrapper.push_back(new IOWrap::SampleOutputWrapper());
